@@ -1,0 +1,73 @@
+/* Analizador Sintáctico para expresiones de SQL*/
+package fesa.ico.compi;
+import java_cup.runtime.*;
+import java.io.FileReader;
+/*Código de Usuario*/
+parser code
+{:
+/*Metodos de reconocimiento de errores de sintáxis*/
+public void report_error(String message, Object info) {
+    StringBuilder m = new StringBuilder("Error");
+    if (info instanceof java_cup.runtime.Symbol) {
+        java_cup.runtime.Symbol s = ((java_cup.runtime.Symbol)info);
+        if (s.left >= 0) {
+            m.append(" en la línea "+(s.left+1));
+            if (s.right >= 0)
+                m.append(", columna "+(s.right+1));
+            }
+        }
+    m.append(" : "+message);
+    System.err.println(m);
+}
+public void report_fatal_error(String message, Object info) {
+    report_error(message, info);
+    System.exit(1);
+}
+/*Método Main*/
+public static boolean main(String[] args){
+    try {
+        SintacticoSQL asin = new SintacticoSQL(
+        new LexicoSQL(new FileReader(args[0])));
+        Object result = asin.parse().value;
+        return true;
+    } catch (Exception ex) {
+        ex.printStackTrace();
+        return false;
+    }
+}
+:}
+/* Terminales (Tokens devueltos por el Analizador Léxico) */
+terminal SELECT, FROM, WHERE, COUNT, DELETE, PYC,
+CS, PA, PC, COMA, INSERT, INTO, VALUES, DISTINCT,
+ALL, IGUAL, MEN, MAY;
+terminal Integer DIG;
+terminal String ID;
+/* No terminales */
+non terminal expr_list, expr_part, first, val, idall, mtid,
+corn, cond;
+non terminal Integer expr; //usado para guardar expresiones evaluadas
+/* Precedencia */
+/* Reglas de Producción */
+start with expr_list;
+expr_list ::= expr_list expr_part
+| expr_part;
+expr_part ::= expr PYC;
+expr ::= first FROM ID
+| first FROM ID WHERE cond
+| INSERT INTO ID PA mtid PC corn;
+first ::= SELECT val
+| DELETE;
+val ::= mtid
+| ALL
+| COUNT PA idall PC
+| DISTINCT mtid;
+idall ::= ID
+| ALL;
+mtid ::= ID
+| ID COMA mtid;
+corn ::= SELECT val FROM ID WHERE cond
+| VALUES PA mtid PC;
+cond ::= ID IGUAL CS ID CS
+| ID IGUAL DIG
+| ID MEN DIG
+| ID MAY DIG;

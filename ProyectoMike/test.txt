@@ -1,0 +1,2 @@
+SELECCIONAR * DE text;
+SELECCIONAR * DE rom;
