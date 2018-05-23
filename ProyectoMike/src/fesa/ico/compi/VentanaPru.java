@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Reader;
@@ -18,6 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java_cup.runtime.Symbol;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -27,6 +29,7 @@ public class VentanaPru extends javax.swing.JFrame {
 
     private List<Symbol> tokenLista;
     private File archivoLec;
+    private String resultado;
 
     /**
      * Creates new form VentanaPru
@@ -44,42 +47,50 @@ public class VentanaPru extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        analizadorSintacos = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        validador = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        traducion = new javax.swing.JTextArea();
+        traductor = new javax.swing.JButton();
+        cargador = new javax.swing.JButton();
+        guardador = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("jButton1");
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+        analizadorSintacos.setText("analizar");
+        analizadorSintacos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
+                analizadorSintacosMouseClicked(evt);
             }
         });
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        validador.setColumns(20);
+        validador.setRows(5);
+        jScrollPane1.setViewportView(validador);
 
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jScrollPane2.setViewportView(jTextArea2);
+        traducion.setColumns(20);
+        traducion.setRows(5);
+        jScrollPane2.setViewportView(traducion);
 
-        jButton2.setText("jButton1");
-        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+        traductor.setText("traducir");
+        traductor.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton2MouseClicked(evt);
+                traductorMouseClicked(evt);
             }
         });
 
-        jButton3.setText("jButton3");
-        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+        cargador.setText("cargar");
+        cargador.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton3MouseClicked(evt);
+                cargadorMouseClicked(evt);
+            }
+        });
+
+        guardador.setText("guardar");
+        guardador.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                guardadorMouseClicked(evt);
             }
         });
 
@@ -92,27 +103,29 @@ public class VentanaPru extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(analizadorSintacos)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton3)))
+                        .addComponent(cargador)))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton2)
-                        .addContainerGap(103, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(traductor)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                        .addComponent(guardador))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(analizadorSintacos)
+                    .addComponent(traductor)
+                    .addComponent(cargador)
+                    .addComponent(guardador))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -123,37 +136,61 @@ public class VentanaPru extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+    private void analizadorSintacosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_analizadorSintacosMouseClicked
         try {
             this.analizarTokens();
         } catch (IOException ex) {
             Logger.getLogger(VentanaPru.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jButton1MouseClicked
+    }//GEN-LAST:event_analizadorSintacosMouseClicked
 
-    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
-        if (jTextArea1.getText().equals("Valido")) {
+    private void traductorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_traductorMouseClicked
+        if (validador.getText().equals("Valido")) {
             try {
                 traducir();
             } catch (IOException ex) {
                 Logger.getLogger(VentanaPru.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-    }//GEN-LAST:event_jButton2MouseClicked
+    }//GEN-LAST:event_traductorMouseClicked
 
-    private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
+    private void cargadorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cargadorMouseClicked
         JFileChooser fc = new JFileChooser();
 
         int seleccion = fc.showOpenDialog(null);
         if (seleccion == JFileChooser.APPROVE_OPTION) {
             archivoLec = fc.getSelectedFile();
         }
-    }//GEN-LAST:event_jButton3MouseClicked
+    }//GEN-LAST:event_cargadorMouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
+    private void guardadorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guardadorMouseClicked
+        try {
+            String nombre = "";
+            JFileChooser file = new JFileChooser();
+            file.showSaveDialog(this);
+            File guarda = file.getSelectedFile();
+
+            if (guarda != null) {
+                /*guardamos el archivo y le damos el formato directamente,
+    * si queremos que se guarde en formato doc lo definimos como .doc*/
+                FileWriter save = new FileWriter(guarda + ".txt");
+                save.write(resultado);
+                save.close();
+                JOptionPane.showMessageDialog(null,
+                        "El archivo se a guardado Exitosamente",
+                        "Información", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null,
+                    "Su archivo no se ha guardado",
+                    "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_guardadorMouseClicked
+
+/**
+ * @param args the command line arguments
+ */
+public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -164,16 +201,40 @@ public class VentanaPru extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-                }
+                
+
+
+
+}
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VentanaPru.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VentanaPru.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VentanaPru.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VentanaPru.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VentanaPru.class
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        
+
+
+
+} catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(VentanaPru.class
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        
+
+
+
+} catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(VentanaPru.class
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        
+
+
+
+} catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(VentanaPru.class
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -187,8 +248,8 @@ public class VentanaPru extends javax.swing.JFrame {
 
     private void analizarTokens() throws FileNotFoundException, IOException {
         tokenLista = new LinkedList<>();
-        this.jTextArea1.selectAll();
-        this.jTextArea1.replaceSelection("");
+        this.validador.selectAll();
+        this.validador.replaceSelection("");
         int contadorID = 0;
         File fichero = archivoLec;//new File("test.txt");
         //PrintWriter writer;
@@ -197,7 +258,7 @@ public class VentanaPru extends javax.swing.JFrame {
         //writer.close();
         Reader reader = new BufferedReader(new FileReader(fichero.getName()/*"test.txt"*/));
         LexicoSQL lexico = new LexicoSQL(reader);
-        String resultado = "";
+        resultado = "";
         int i = 0;
         //while (i<1){
         //    Symbol token = lexico.next_token();
@@ -207,37 +268,38 @@ public class VentanaPru extends javax.swing.JFrame {
         String[] archivoPrueba = {"test.txt"};
 
         if (SintacticoSQL.main(archivoPrueba)) {
-            jTextArea1.setText("Valido");
+            validador.setText("Valido");
         } else {
-            jTextArea1.setText("Invalido");
+            validador.setText("Invalido");
         }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton analizadorSintacos;
+    private javax.swing.JButton cargador;
+    private javax.swing.JButton guardador;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
+    private javax.swing.JTextArea traducion;
+    private javax.swing.JButton traductor;
+    private javax.swing.JTextArea validador;
     // End of variables declaration//GEN-END:variables
 
     private void traducir() throws FileNotFoundException, IOException {
         tokenLista = new LinkedList<>();
-        this.jTextArea1.selectAll();
-        this.jTextArea1.replaceSelection("");
+        this.validador.selectAll();
+        this.validador.replaceSelection("");
         int contadorID = 0;
 
         Reader reader = new BufferedReader(new FileReader(archivoLec));
         LexicoSQL lexico = new LexicoSQL(reader);
-        String resultado = "";
-        String control =" ";
+        resultado = "";
+        String control = " ";
         while (!control.equals("EOF")) {
             Symbol token = lexico.next_token();
             switch (token.toString()) {
                 case "#0":
-                    control="EOF";
+                    control = "EOF";
                     break;
                 case "#1":
                     break;
@@ -245,66 +307,66 @@ public class VentanaPru extends javax.swing.JFrame {
                     resultado += " SELECT";
                     break;
                 case "#3":
-                    resultado += "FROM";
+                    resultado += " FROM";
                     break;
                 case "#4":
-                    resultado += "WHERE";
+                    resultado += " WHERE";
                     break;
                 case "#5":
-                    resultado += "COUNT";
+                    resultado += " COUNT";
                     break;
                 case "#6":
-                    resultado += "DELETE";
+                    resultado += " DELETE";
                     break;
                 case "#7":
-                    resultado += ";";
+                    resultado += ";\n";
                     break;
                 case "#8":
-                    resultado += "'";
+                    resultado += " '";
                     break;
                 case "#9":
-                    resultado += "(";
+                    resultado += " (";
                     break;
                 case "#10":
-                    resultado += ")";
+                    resultado += ") ";
                     break;
                 case "#11":
-                    resultado += ",";
+                    resultado += ", ";
                     break;
                 case "#12":
-                    resultado += "INSERT";
+                    resultado += " INSERT";
                     break;
                 case "#13":
-                    resultado += "INTO";
+                    resultado += " INTO";
                     break;
                 case "#14":
-                    resultado += "VALUES";
+                    resultado += " VALUES";
                     break;
                 case "#15":
-                    resultado += "DISTINCT";
+                    resultado += " DISTINCT";
                     break;
                 case "#16":
-                    resultado += "*";
+                    resultado += " *";
                     break;
                 case "#17":
-                    resultado += "=";
+                    resultado += " =";
                     break;
                 case "#18":
-                    resultado += "<";
+                    resultado += " <";
                     break;
                 case "#19":
-                    resultado += ">";
+                    resultado += "> ";
                     break;
                 case "#20":
-                    resultado += lexico.yytext();
+                    resultado += " " + lexico.yytext();
                     break;
                 case "#21":
-                    resultado += lexico.yytext();
+                    resultado += " " + lexico.yytext();
                     break;
                 default:
                     resultado += "<" + lexico.yytext() + ">";
             }
-        jTextArea2.setText(resultado);
+            traducion.setText(resultado);
         }
     }
 }
